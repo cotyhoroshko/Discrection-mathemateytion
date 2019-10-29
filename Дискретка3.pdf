@@ -1,0 +1,313 @@
+МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ В
+НАЦІОНАЛЬНОМУ УНІВЕРСИТЕТІ “ЛЬВІВСЬКА
+ПОЛІТЕХНІКА”
+
+                                          
+
+Кафедра систем штучного інтелекту
+
+
+
+
+
+
+
+
+
+      
+
+Лабораторна робота №3
+з дисципліни
+«Дискретна математика»
+
+
+
+
+
+
+
+Виконав:
+студент групи КН-115
+Андрій Мруць
+Викладач:
+Мельникова Н. І.
+
+
+
+
+
+Львів – 2019 р.
+
+
+
+
+
+
+Побудова матриці бінарного відношення
+      Мета роботи: набуття практичних вмінь та навичок при побудові матриць бінарних відношень та визначенні їх типів. 
+
+Варіант №7
+Додаток 1
+Чи є вірною рівність: (A?B) ?(C?D) = (A?D) ?(B?C) ?
+Знайти  матрицю  відношення  R ? 2??2? :  
+R = {(x, y)| xcA & ycB & xcy}, де A ={1,2}, B = {1,2,4}.  
+Зобразити відношення графічно: a = {(x. y)| (x, y) є R? & x? – 2x + y? = 8}, де R - множина дійсних чисел.  
+Навести приклад бінарного відношення R?A?A, де A={a,b,c,d,e}, яке є антирефлексивне, симетричне, транзитивне, та побудувати його матрицю. 
+Визначити множину (якщо це можливо), на якій дане відношення є: 
+а) функціональним; 
+б) бієктивним: 
+а = {(x, y)|(x, y) є R? & y = (x–2)? ? }
+Розв'язання:
+1) (A?B) x (C?D) = (AxD) ? (BxC)
+Нехай (x, y) є (AxD) ? (BxC);
+           (x, y) є (AxD) & (x, y) є (BxC);
+           (x є A & x є B) & (y є D & y є C);
+           (x є A ? B) & (y є D ? C);
+           (x, y) є (A ? B) x (D ? C).
+Отже, рівність є вірною.
+2) R ? 2??2?
+R = Х(x, y)| xєA & yєB & xєy}
+A ={1,2}, B = {1,2,4}
+
+	-О-	{1}	{2}	{4}	{1, 2}	{1, 4}	{2, 4}
+1	0	0	0	0	1	1	0
+2	0	0	0	0	1	0	1
+
+a = {(x. y)| (x, y) ? R? & x? – 2x + y? = 8}
+x? – 2x + y? = 8
+x? – 2x + 1 + y? = 9
+(x - 1)? + y? = 9
+Графіком даного рівняння є коло з центром у т. О(1; 0) і радіусом 3.
+ 
+4. R?A?A, де A={a,b,c,d,e}
+
+               0 1 0 1 0  
+               1 0 1 0 1 
+A(R)=     0 1 0 1 0  
+               1 0 1 0 1 
+               0 1 0 1 0 
+Відношення є антирефлексивним, симетричним і транзитивним.
+5. a = {(x, y) | (x, y) є R2 & y = (x - 2)-2}
+ 
+а) Дане відношення є функціональним при х є (-?; 2)  (2; +?) ?          б) Дане відношення не є бієктивним. 
+
+Додаток 2
+
+#include "pch.h"
+#include <iostream>
+using namespace std;
+
+void ruchkami(int array[], int SIZE)
+{
+	for (int i = 0; i < SIZE; i++)
+		cin >> array[i];
+}
+
+void rand(int arr[], int a)
+{
+	for (int i = 0; i < a; i++)
+	{
+		arr[i] = rand() % 100;
+	}
+}
+
+void zap(int arr[], int brr[], int fa, int fb)
+{
+	int wybir;
+	cin >> wybir;
+	if (wybir == 1)
+	{
+		//заповнення масивів вручну
+		cout << "First" << endl;
+		ruchkami(arr, fa);
+		cout << "Second" << endl;
+		ruchkami(brr, fb);
+	}
+	else if (wybir == 2)
+	{
+		//заповнення масиву рандомними числами
+		rand(arr, fa);
+		rand(brr, fb);
+	}
+	else
+	{
+		cout << "Shos` ne to, poprobuyte sheraz." << endl;
+		zap(arr, brr, fa, fb);
+	}
+}
+
+void cout_it(int arr[], int a)
+{
+	for (int i = 0; i < a; i++)
+	{
+		cout << arr[i] << " ";
+	}
+	cout << endl;
+}
+
+void ref(int *array[], int dow, int *reflection)
+{
+	
+	int p = 0;
+	int t = 0;
+	for (int z = 0; z < dow; z++)
+	{
+		if (array[z][z] == 1)
+			p++;
+	}
+
+	for (int z = 0; z < dow; z++)
+	{
+		if (array[z][z] == 0)
+			t++;
+	}
+	if (p == dow)
+		*reflection = 1;
+	else if (t == dow)
+		*reflection = 0;
+	else
+		*reflection = 2;
+
+}
+
+void sym(int *array[], int dow, int *symetria)
+{
+	int p = 0;
+	int e = 0;
+	for (int z = 0; z < dow; z++)
+	{
+		for (int y = 0; y < dow; y++)
+		{
+			if (z == y)
+				continue;
+			else if (array[z][y] == array[y][z])
+				p++;
+			else if ((array[z][y] == 0) && (array[y][z] == 1) || (array[z][y] == 1) && (array[y][z] == 0))
+				e++;
+		}
+	}
+	if (p == (dow*dow) - dow)
+		*symetria = 1;
+	else if (e == (dow*dow) - dow)
+		*symetria = 0;
+	else
+		*symetria = 2;
+}
+
+void trans(int *array[], int dow, int *transitive)
+{
+	for (int i = 0; i < dow; i++)
+	{
+		for (int j = 0; j < dow; j++)
+		{
+			if (array[i][j] == 1)
+			{
+				for (int q = 0; q < dow; q++)
+				{
+					if (array[j][q] == 1)
+					{
+						if (array[i][q] != 1) {
+							*transitive = 0;
+						}
+						else {
+							*transitive = 1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+int main()
+{
+	int fa, fb, wybir;
+	cout << "Symbols for A: ";
+	cin >> fa;
+	cout << "Symbols for B: " ;
+	cin >> fb;
+
+	int *arr = new int[fa];
+	int *brr = new int[fb];
+
+	//заповнення масиву
+	cout << "Yaksho ty hochesh wvodyty masyw wruchnu, enter 1, yaksho randomom, enter 2." << endl;
+	zap(arr, brr, fa, fb);
+
+	//ошолошення динамічного двовимірного масиву для бінарної матриці
+	int **binar = new int*[fa];
+	for (int i = 0; i < fa; i++)
+	{
+		binar[i] = new int[fb];
+	}
+
+	//головна умова (a < 3b)
+	for (int i = 0; i < fa; i++)
+	{
+		for (int j = 0; j < fb; j++)
+		{
+			if (arr[i] < 3*brr[j])
+				binar[i][j] = 1;
+			else
+				binar[i][j] = 0;
+		}
+	}
+
+	//виведення множин
+	cout << "Masyw number one: ";
+	cout_it(arr, fa);
+	cout << "Masyw number two: ";
+	cout_it(brr, fb);
+
+	//виведення бінарної матриці
+	for (int i = 0; i < fb; i++)
+	{
+		for (int j = 0; j < fa; j++)
+		{
+			cout << binar[j][i] << "\t";
+		}
+		cout << endl;
+	}
+
+	int reflection;
+	int transitive = 0;
+	int symetria = 0;
+
+	int *preflection = &reflection;
+	int *psymetria = &symetria;
+	int *ptransitive = &transitive;
+
+	ref(binar, fa, preflection);
+	sym(binar, fa, psymetria);
+	trans(binar, fa, ptransitive);
+
+	if (fa == fb)
+	{
+		if ((*preflection == 1) && (*psymetria == 1) && (*ptransitive == 0))
+			cout << "Sumisne vidnoshennia" << endl;
+		else if ((*preflection == 1) && (*psymetria == 1) && (*ptransitive == 1))
+			cout << "Ekvivalentne vidnoshennia" << endl;
+		else if ((*preflection == 1) && (*ptransitive == 1) && (*psymetria == 0))
+			cout << "Chastkovoho poryadku" << endl;
+		else if ((*preflection == 0) && (*psymetria == 0) && (*ptransitive == 1))
+			cout << "Povnoho poryadku" << endl;
+		else
+			cout << "Nic" << endl;
+	}
+	else
+		cout << "Ne kwadratna" << endl;
+
+	cout << *preflection << *psymetria << *ptransitive << endl;
+}
+
+Результат
+
+ 
+
+ 
+
+ 
+
+
+
